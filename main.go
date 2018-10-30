@@ -1,8 +1,9 @@
 package main
 
-import "youtub/errorDefer"
+import "golang-demo/maze"
 
 func main() {
 	// closeBag.FeibonaciNumsList()
-	errorDefer.HttpErrDemo()
+	// errorDefer.HttpErrDemo()
+	maze.MazeBaseBreadthFirstDemo()
 }
