@@ -16,7 +16,10 @@ func readeMazeMap(fileName string) [][]int {
 	res := make([][]int, row)
 	for i := range res {
 		res[i] = make([]int, col)
+		var temp int
+		fmt.Fscanln(fileHandle, &temp)
 		for j := range res[i] {
+			// fmt.Fscanln(fileHandle, &res[i][j])
 			fmt.Fscanf(fileHandle, "%d", &res[i][j])
 		}
 	}
@@ -52,26 +55,25 @@ func breadthFirstFindMazeUntie(mazeMap [][]int, start, end point, direction []po
 		res[i] = make([]int, len(mazeMap[0]))
 	}
 	q := []point{start}
-	step := 0
 	var curr point
 	for len(q) > 0 {
 		curr = q[0]
 		q = q[1:]
-		res[curr.i][curr.j] = step
-		step ++
+		// res[curr.i][curr.j] = step
 
 		for _, v := range direction {
 			tempPoint := curr.Add(v)
 			if !checkPointLicit(tempPoint, rowLimit, colLimit) {
 				continue
 			}
-			if mazeMap[tempPoint.i][tempPoint.j] == 1 {
+			if mazeMap[tempPoint.i][tempPoint.j] == 1 || res[tempPoint.i][tempPoint.j] > 0 {
 				continue
 			}
-			if tempPoint == v {
+			if tempPoint == start {
 				continue
 			}
 			q = append(q, tempPoint)
+			res[tempPoint.i][tempPoint.j] = res[curr.i][curr.j] + 1
 		}
 	}
 	return res
@@ -79,6 +81,7 @@ func breadthFirstFindMazeUntie(mazeMap [][]int, start, end point, direction []po
 
 func MazeBaseBreadthFirstDemo() {
 	mazeMap := readeMazeMap("maze/mazeMap")
+	fmt.Println(mazeMap)
 	direction := []point{{0, -1}, {i: 1, j: 0}, {i: 0, j: 1}, {i: -1, j: 0}}
 	res := breadthFirstFindMazeUntie(mazeMap, point{i: 0, j: 0}, point{5, 4}, direction)
 	fmt.Println(res)
