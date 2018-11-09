@@ -1,9 +1,10 @@
 package main
 
-import "golang-demo/maze"
+import "golang-demo/reptile"
 
 func main() {
 	// closeBag.FeibonaciNumsList()
 	// errorDefer.HttpErrDemo()
-	maze.MazeBaseBreadthFirstDemo()
+	//maze.MazeBaseBreadthFirstDemo()
+	reptile.GetHtml()
 }
