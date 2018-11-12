@@ -3,7 +3,6 @@ package reptile
 import (
 	"net/http"
 	"io/ioutil"
-	"fmt"
 	"github.com/Sirupsen/logrus"
 	"golang.org/x/text/transform"
 	"golang.org/x/text/encoding"
@@ -22,23 +21,26 @@ func getHtml(url string) {
 		logrus.Errorf("this http the statusCode is %v", resp.StatusCode)
 		return
 	}
-	utf8Reader := transform.NewReader(resp.Body, Determineencoding(resp.Body).NewDecoder())
+	e, reader := determineEncoding(resp.Body)
+	utf8Reader := transform.NewReader(reader, e.NewDecoder())
 	body, err := ioutil.ReadAll(utf8Reader)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("%s", body)
+	// fmt.Printf("%s", body)
+	regGetCity(body)
 }
 
 func GetHtml() {
-	getHtml("http://xm.zu.fang.com")
+	getHtml("http://city.zhenai.com/")
 }
 
-func Determineencoding(reader io.Reader) encoding.Encoding {
-	bytes, err := bufio.NewReader(reader).Peek(1024)
+func determineEncoding(reader io.Reader) (encoding.Encoding, io.Reader) {
+	r := bufio.NewReader(reader)
+	buff, err := r.Peek(1024)
 	if err != nil {
 		panic(err)
 	}
-	e, _, _ := charset.DetermineEncoding(bytes, "")
-	return e
+	e, _, _ := charset.DetermineEncoding(buff, "")
+	return e, r
 }
