@@ -1,10 +1,10 @@
 package errorDefer
 
 import (
-	"net/http"
-	"os"
 	"io/ioutil"
 	"log"
+	"net/http"
+	"os"
 )
 
 func showFailContent(writer http.ResponseWriter, request *http.Request) error {

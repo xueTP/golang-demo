@@ -1,9 +1,9 @@
 package closeBag
 
 import (
+	"bufio"
 	"fmt"
 	"io"
-	"bufio"
 	"strconv"
 	"strings"
 )
@@ -25,7 +25,7 @@ func (ig intGen) Read(p []byte) (n int, err error) {
 func feiboaci() intGen {
 	var a, b int = 0, 1
 	return func() int {
-		a, b = b, a + b
+		a, b = b, a+b
 		return a
 	}
 }

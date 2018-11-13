@@ -1,14 +1,14 @@
 package reptile
 
 import (
-	"net/http"
-	"io/ioutil"
-	"github.com/Sirupsen/logrus"
-	"golang.org/x/text/transform"
-	"golang.org/x/text/encoding"
-	"io"
 	"bufio"
+	"github.com/Sirupsen/logrus"
 	"golang.org/x/net/html/charset"
+	"golang.org/x/text/encoding"
+	"golang.org/x/text/transform"
+	"io"
+	"io/ioutil"
+	"net/http"
 )
 
 func getHtml(url string) {

@@ -1,8 +1,8 @@
 package maze
 
 import (
-	"os"
 	"fmt"
+	"os"
 )
 
 func readeMazeMap(fileName string) [][]int {
