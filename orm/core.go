@@ -24,7 +24,7 @@ func core() {
 	// 开启调试
 	DB.LogMode(true)
 	// 删除表
-	DropTable()
-	// 创建及迁移表
+	//DropTable()
+	//创建及迁移表
 	CreateTable()
 }
