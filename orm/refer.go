@@ -24,7 +24,7 @@ func CreateTable() {
 		DB.Set("gorm:table_options", "ENGINE=Innodb").AutoMigrate(&Email{})
 	}
 	// 设置相应外键
-	DB.Model(&User{}).AddForeignKey("class_refer", "class(`class_id`)", "RESTRICT", "RESTRICT")
+	//DB.Model(&User{}).AddForeignKey("class_id", "class(`class_id`)", "RESTRICT", "RESTRICT")
 }
 
 func DropTable() {
@@ -35,13 +35,13 @@ func DropTable() {
 }
 
 type User struct {
-	UserId     int32      `gorm:"primary_key"`
-	Name       string     `gorm:"column:userName;type: varchar(20);not null"`
-	Age        int8       `gorm:"default:0"`
-	Class      Class      `gorm:"foreign_key:ClassRefer;association_foreign_key:ClassId"` // classId 为外键
-	ClassRefer    int32      // 属于 一对多
-	UserDetail UserDetail // 包含 一对一
-	Emails     []Email    // 包含多个 -对多
+	UserId     int32  `gorm:"primary_key"`
+	Name       string `gorm:"column:userName;type: varchar(20);not null"`
+	Age        int8   `gorm:"default:0"`
+	Class      Class      `gorm:"ForeignKey:ClassRefer;AssociationForeignKey:ClassId"` // classId 为外键
+	ClassRefer int32
+	UserDetail UserDetail // 包含
+	Emails     []Email    // 包含多个
 }
 
 type UserDetail struct {
@@ -50,7 +50,7 @@ type UserDetail struct {
 }
 
 type Class struct {
-	ClassId int32  `gorm:"column:classId;primary_key;AUTO_INCREMENT"`
+	ClassId int32 `gorm:"primary_key"`
 	Name    string `gorm:"type: varchar(20);unique"`
 }
 

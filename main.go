@@ -1,8 +1,8 @@
 package main
 
 import (
-	"golang-demo/orm"
 	"fmt"
+	"golang-demo/orm"
 )
 
 func main() {
@@ -12,14 +12,14 @@ func main() {
 	//reptile.GetHtml()
 
 	defer orm.DB.Close()
-	// class
-	class1 := orm.Class{Name: "t1 class"}
-	class2 := orm.Class{Name: "t2 class"}
+	//class
+	class1 := orm.Class{Name: "t1 class", ClassId: 3}
+	class2 := orm.Class{Name: "t2 class", ClassId: 4}
 	orm.DB.Create(&class1)
 	orm.DB.Create(&class2)
 	// user
-	user1 := orm.User{Name: "sum", ClassRefer: class1.ClassId}
-	user2 := orm.User{Name: "bod", ClassRefer: class2.ClassId}
+	user1 := orm.User{Name: "sum", ClassRefer: class2.ClassId}
+	user2 := orm.User{Name: "bod", ClassRefer: class1.ClassId}
 	orm.DB.Create(&user1)
 	orm.DB.Create(&user2)
 	// userDetail
@@ -35,9 +35,10 @@ func main() {
 	user_1 := orm.User{}
 	class_1 := orm.Class{}
 	orm.DB.Where("userName = ?", "bod").Find(&user_1)
-	fmt.Printf("%+v, -- %d", user_1, user1.ClassRefer)
-	orm.DB.Model(&user_1).Related(&class_1)
-	fmt.Printf("%+v \n %+v", user_1, class_1)
+	fmt.Printf("%+v, -- %d", user_1, user_1.ClassRefer)
+	//err := orm.DB.Model(&user_1).Related(&class_1, "ClassRefer").Error
+	err := orm.DB.Model(&user_1).Association("Class").Find(&class_1).Error
+	fmt.Printf("%+v \n %+v \n %v", user_1, class_1, err)
 	// 包含
 	// user_2 := orm.User{}
 	// orm.DB.Where("userName = ?", "bod").Find(&user_2)
