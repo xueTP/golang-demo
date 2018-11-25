@@ -13,7 +13,7 @@ var DB *gorm.DB
 
 func core() {
 	// root/12345678
-	db, err := gorm.Open("mysql", "root:12345678@/gormdemo?charset=utf8&parseTime=True&loc=Local")
+	db, err := gorm.Open("mysql", "root:root@/gormdemo?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		panic(err)
 	}

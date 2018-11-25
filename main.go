@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"golang-demo/orm"
+	"fmt"
 )
 
 func main() {
@@ -23,13 +23,18 @@ func main() {
 	orm.DB.Create(&user1)
 	orm.DB.Create(&user2)
 	// userDetail
-	orm.DB.Create(&orm.UserDetail{UserId: user2.UserId, IdCard: "12345678"})
-	orm.DB.Create(&orm.UserDetail{UserId: user1.UserId, IdCard: "32342342"})
+	orm.DB.Create(&orm.UserDetail{UserRefer: user2.ID, IdCard: "12345678"})
+	orm.DB.Create(&orm.UserDetail{UserRefer: user1.ID, IdCard: "32342342"})
 	//email
-	orm.DB.Create(&orm.Email{UserId: user1.UserId, Email: "t1@email.com"})
-	orm.DB.Create(&orm.Email{UserId: user1.UserId, Email: "t2@email.com"})
-	orm.DB.Create(&orm.Email{UserId: user2.UserId, Email: "t3@email.com"})
-	orm.DB.Create(&orm.Email{UserId: user2.UserId, Email: "t4@email.com"})
+	orm.DB.Create(&orm.Email{UserTid: user1.ID, Email: "t1@email.com"})
+	orm.DB.Create(&orm.Email{UserTid: user1.ID, Email: "t2@email.com"})
+	orm.DB.Create(&orm.Email{UserTid: user2.ID, Email: "t3@email.com"})
+	orm.DB.Create(&orm.Email{UserTid: user2.ID, Email: "t4@email.com"})
+	//language
+	language1 := orm.Language{Language: "english", Level: 1}
+	language2 := orm.Language{Language: "中文", Level: 1}
+	orm.DB.Create(&language1)
+	orm.DB.Create(&language2)
 
 	// 属于
 	user_1 := orm.User{}
@@ -41,13 +46,32 @@ func main() {
 	// 包含
 	user_2 := orm.User{}
 	userDetial_2 := orm.UserDetail{}
-	orm.DB.Where("userName = ?", "sum").Find(&user_2)
+	orm.DB.Where("userName = ?", "bod").Find(&user_2)
 	fmt.Printf("%+v", user_2)
-	orm.DB.Model(&user_2).Related(&userDetial_2)
+	orm.DB.Model(&user_2).Related(&userDetial_2, "UserRefer")
 	fmt.Printf("%+v", userDetial_2)
 	// 包含多个
-	// user_3 := orm.User{}
-	// orm.DB.Where("userName = ?", "bod").Find(&user_3)
-	// orm.DB.Model(&user_3).Related(&user_3.Emails, "Emails")
-	// fmt.Printf("%+v", user_3.Emails)
+	user_3 := orm.User{}
+	email_3s := []orm.Email{}
+	orm.DB.Where("userName = ?", "bod").Find(&user_3)
+	fmt.Printf("%+v", user_3)
+	orm.DB.Model(&user_3).Related(&email_3s, "UserTid")
+	// orm.DB.Model(&user_3).Association("Emails").Find(&email_3s)
+	fmt.Printf("%+v", email_3s)
+	// 多对多
+	user_4 := orm.User{}
+	language_4 := []orm.Language{}
+	orm.DB.Model(&orm.User{}).Where("userName = ?", "sum").Find(&user_4)
+	fmt.Printf("%+v", user_4)
+	orm.DB.Model(&user_4).Association("Languages").Append(&language1)
+	orm.DB.Model(&user_4).Association("Languages").Append(&language2)
+
+	orm.DB.Model(&user_4).Related(&language_4, "Languages")
+	// orm.DB.Model(&user_4).Association("Languages").Find(&language_4)
+	fmt.Printf("%+v", language_4)
+
+	// preload
+	user_5 := orm.User{}
+	orm.DB.Preload("Languages").Preload("UserDetail").Where("userName = ?", "sum").Find(&user_5)
+	fmt.Printf("%+v", &user_5)
 }
