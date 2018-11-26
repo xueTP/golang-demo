@@ -1,6 +1,9 @@
 package orm
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/jinzhu/gorm"
+	"time"
+)
 
 //select * from INFORMATION_SCHEMA.KEY_COLUMN_USAGE  where REFERENCED_TABLE_NAME='t_stu'
 
@@ -52,6 +55,8 @@ type User struct {
 	UserDetail UserDetail `gorm:"ForeignKey:UserRefer;"`   // 包含
 	Email      []Email    `gorm:"ForeignKey:UserID"`       // 包含多个
 	Languages  []Language `gorm:"many2many:user_language"` // 多对多
+	CreateTime int64
+	UpdateTime int64
 }
 
 type UserDetail struct {
@@ -81,4 +86,15 @@ type Language struct {
 	Language string `gorm:"type:varchar(20);default value:''"`
 	Level    int8   `gorm:"type:int(4)"`
 	Users    []User `gorm:"many2many:user_language"`
+}
+
+
+func (u *User) BeforeCreate() (err error) {
+	u.CreateTime = time.Now().Unix()
+	return err
+}
+
+func (u *User) BeforeUpdate(scope *gorm.Scope) (error) {
+	scope.SetColumn("update_time", time.Now().Unix())
+	return nil
 }

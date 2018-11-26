@@ -3,6 +3,7 @@ package main
 import (
 	"golang-demo/orm"
 	"fmt"
+	"time"
 )
 
 func main() {
@@ -73,5 +74,11 @@ func main() {
 	// preload
 	user_5 := orm.User{}
 	orm.DB.Preload("Languages").Preload("UserDetail").Where("userName = ?", "sum").Find(&user_5)
+	//orm.DB.Preload("Class").Preload("Email").Where("userName = ?", "sum").Find(&user_5) // Preload
+	// DefaultTableNameHandler 与 model.TableName 同时使用导致class 不能使用
+	// User 包含多个 Email 的外键设置没有使用默认类名 + ID 导致email 不能使用
 	fmt.Printf("%+v", &user_5)
+
+	time.Sleep(5 * time.Second)
+	orm.DB.Model(&orm.User{}).Where("userName = ?", "sum").Update("age", 12)
 }
