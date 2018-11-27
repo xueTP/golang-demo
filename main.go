@@ -2,7 +2,7 @@ package main
 
 import (
 	"golang-demo/orm"
-	"golang-demo/orm/relate"
+	"golang-demo/orm/hasOne"
 )
 
 func main() {
@@ -80,5 +80,5 @@ func main() {
 	//
 	//time.Sleep(5 * time.Second)
 	//orm.DB.Model(&orm.User{}).Where("userName = ?", "sum").Update("age", 12)
-	relate.BelongsToDemo()
+	hasOne.HasOneDemo()
 }
