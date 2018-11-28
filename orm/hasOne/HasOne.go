@@ -25,7 +25,7 @@ func HasOneDemo() {
 	orm.DB.Set("gorm:table_options", "ENGINE=Innodb").CreateTable(&User{})
 	orm.DB.Set("gorm:table_options", "ENGINE=Innodb").CreateTable(&UserDetail{})
 
-	// user1
+	// user
 	user1 := User{Name: "sum"}
 	user2 := User{Name: "bod"}
 	orm.DB.Create(&user1)
@@ -39,7 +39,10 @@ func HasOneDemo() {
 	userInfo := User{}
 	orm.DB.Where("userName = ?", "bod").Find(&userInfo)
 	fmt.Printf("User is : %+v", userInfo)
-	// orm.DB.Model(&userInfo).Related(&userInfo.UserDetail, "UserRefer")
+	//orm.DB.Model(&userInfo).Related(&userInfo.UserDetail, "UserRefer")
 	orm.DB.Model(&userInfo).Association("UserDetail").Find(&userInfo.UserDetail)
 	fmt.Printf("%+v", userInfo.UserDetail)
+
+	// preload
+
 }

@@ -2,7 +2,8 @@ package main
 
 import (
 	"golang-demo/orm"
-	"golang-demo/orm/hasOne"
+	"fmt"
+	"time"
 )
 
 func main() {
@@ -35,8 +36,8 @@ func main() {
 	//language2 := orm.Language{Language: "中文", Level: 1}
 	//orm.DB.Create(&language1)
 	//orm.DB.Create(&language2)
-	//
-	//// 属于
+
+	//属于
 	//user_1 := orm.User{}
 	//class_1 := orm.Class{}
 	//orm.DB.Where("userName = ?", "bod").Find(&user_1)
@@ -69,16 +70,19 @@ func main() {
 	//orm.DB.Model(&user_4).Related(&language_4, "Languages")
 	//// orm.DB.Model(&user_4).Association("Languages").Find(&language_4)
 	//fmt.Printf("%+v", language_4)
-	//
-	//// preload
-	//user_5 := orm.User{}
-	//orm.DB.Preload("Languages").Preload("UserDetail").Where("userName = ?", "sum").Find(&user_5)
-	////orm.DB.Preload("Class").Preload("Email").Where("userName = ?", "sum").Find(&user_5) // Preload
-	//// DefaultTableNameHandler 与 model.TableName 同时使用导致class 不能使用
-	//// User 包含多个 Email 的外键设置没有使用默认类名 + ID 导致email 不能使用
-	//fmt.Printf("%+v", &user_5)
-	//
-	//time.Sleep(5 * time.Second)
-	//orm.DB.Model(&orm.User{}).Where("userName = ?", "sum").Update("age", 12)
-	hasOne.HasOneDemo()
+
+	orm.DB.LogMode(true)
+	// preload
+	user_5 := orm.User{}
+	orm.DB.Preload("Languages").Preload("UserDetail").Where("userName = ?", "sum").Find(&user_5)
+	//orm.DB.Preload("Class").Preload("Email").Where("userName = ?", "sum").Find(&user_5) // Preload
+	// DefaultTableNameHandler 与 model.TableName 同时使用导致class 不能使用
+	// User 包含多个 Email 的外键设置没有使用默认类名 + ID 导致email 不能使用
+	fmt.Printf("%+v", &user_5)
+
+	time.Sleep(5 * time.Second)
+	orm.DB.Model(&orm.User{}).Where("userName = ?", "sum").Update("age", 12)
+
+
+	//manyToMany.ManyToManyDemo()
 }
