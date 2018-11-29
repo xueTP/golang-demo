@@ -43,7 +43,7 @@ func DropTable() {
 	DB.DropTableIfExists(&UserDetail{})
 	DB.DropTableIfExists(&Email{})
 	DB.DropTableIfExists(&Language{})
-	DB.DropTableIfExists("gorm_user_language")
+	DB.DropTableIfExists("gorm_user_languages")
 }
 
 type User struct {
@@ -54,7 +54,7 @@ type User struct {
 	ClassRefer int32      // user 属于 class classRefer 是外键
 	UserDetail UserDetail `gorm:"ForeignKey:UserRefer;"`   // 包含
 	Email      []Email    `gorm:"ForeignKey:UserID"`       // 包含多个
-	Languages  []Language `gorm:"many2many:user_language"` // 多对多
+	Languages  []Language `gorm:"many2many:user_languages"` // 多对多
 	CreateTime int64
 	UpdateTime int64
 }
@@ -85,7 +85,7 @@ type Language struct {
 	ID       int32  `gorm:"primary_key"`
 	Language string `gorm:"type:varchar(20);default value:''"`
 	Level    int8   `gorm:"type:int(4)"`
-	Users    []User `gorm:"many2many:user_language"`
+	Users    []User `gorm:"many2many:user_languages"`
 }
 
 

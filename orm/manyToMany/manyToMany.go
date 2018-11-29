@@ -13,20 +13,21 @@ type User struct {
 	Name      string `gorm:"column:userName;type: varchar(20);not null"`
 	Age       int8   `gorm:"default:0"`
 	Refer     int32
-	Languages []Language `gorm:"many2many:user_languages;jointable_foreignkey:UserRefer;association_jointable_foreignkey:LangRefer"` // 多对多
+	Languages []Language `gorm:"many2many:user_languages;AssociationForeignKey:UserRefer;jointable_foreignkey:UserId;association_jointable_foreignkey:LangRefer;"` // 多对多
 }
 
 type Language struct {
-	ID       int32  `gorm:"primary_key"`
-	Language string `gorm:"type:varchar(20);default value:''"`
-	Level    int8   `gorm:"type:int(4)"`
-	Users    []User `gorm:"many2many:user_languages"`
+	ID        int32  `gorm:"primary_key"`
+	Language  string `gorm:"type:varchar(20);default value:''"`
+	Level     int8   `gorm:"type:int(4)"`
+	UserRefer int32
+	Users     []User `gorm:"many2many:user_languages"`
 }
 
 type UserLanguage struct {
-	UserRefer int32 `gorm:"primary_key;Column:userRefer;AUTO_INCREMENT:false;"`
-	LangRefer int32 `gorm:"primary_key;Column:langRefer;AUTO_INCREMENT:false;"`
-	Other     string
+	UserID     int32 `gorm:"primary_key;Column:UserId;AUTO_INCREMENT:false;"`
+	LanguageID int32 `gorm:"primary_key;Column:LangRefer;AUTO_INCREMENT:false;"`
+	Other      string
 }
 
 func ManyToManyDemo() {
@@ -39,10 +40,10 @@ func ManyToManyDemo() {
 	//orm.DB.Set("gorm:table_options", "ENGINE=Innodb").AutoMigrate(&UserLanguage{})
 
 	//language
-	language1 := Language{Language: "english", Level: 1}
-	language2 := Language{Language: "中文", Level: 1}
-	language3 := Language{Language: "lingua italiana", Level: 2}
-	language4 := Language{Language: "Deutsch", Level: 2}
+	language1 := Language{Language: "english", Level: 1, UserRefer: 1}
+	language2 := Language{Language: "中文", Level: 1, UserRefer: 2}
+	language3 := Language{Language: "lingua italiana", Level: 2, UserRefer: 3}
+	language4 := Language{Language: "Deutsch", Level: 2, UserRefer: 4}
 	orm.DB.Create(&language1)
 	orm.DB.Create(&language2)
 	orm.DB.Create(&language3)
@@ -60,13 +61,13 @@ func ManyToManyDemo() {
 	fmt.Printf("User is : %+v", userInfo)
 	orm.DB.Model(&userInfo).Related(&userInfo.Languages, "Languages")
 	fmt.Printf("Language is : %+v", userInfo.Languages)
-	orm.DB.Model(&userInfo).Association("Languages").Append(&language3)
-	orm.DB.Model(&userInfo).Association("Languages").Append(&language4)
-	orm.DB.Model(&userInfo).Association("Languages").Find(&userInfo.Languages)
-	fmt.Printf("Language is : %+v", userInfo.Languages)
+	// orm.DB.Model(&userInfo).Association("Languages").Append(&language3)
+	// orm.DB.Model(&userInfo).Association("Languages").Append(&language4)
+	// orm.DB.Model(&userInfo).Association("Languages").Find(&userInfo.Languages)
+	// fmt.Printf("Language is : %+v", userInfo.Languages)
 
 	// 关联模式
-	//orm.DB.LogMode(false)
+	orm.DB.LogMode(false)
 	userAss := User{}
 	orm.DB.Model(&User{}).Where("userName = ?", "sum").Find(&userAss)
 	fmt.Printf("User is : %+v \n", userAss)

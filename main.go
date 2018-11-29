@@ -3,7 +3,6 @@ package main
 import (
 	"golang-demo/orm"
 	"fmt"
-	"time"
 )
 
 func main() {
@@ -14,28 +13,28 @@ func main() {
 
 	defer orm.DB.Close()
 	//class
-	//class1 := orm.Class{Name: "t1 class", ClassId: 3}
-	//class2 := orm.Class{Name: "t2 class", ClassId: 4}
-	//orm.DB.Create(&class1)
-	//orm.DB.Create(&class2)
-	//// user
-	//user1 := orm.User{Name: "sum", ClassRefer: class2.ClassId}
-	//user2 := orm.User{Name: "bod", ClassRefer: class1.ClassId}
-	//orm.DB.Create(&user1)
-	//orm.DB.Create(&user2)
-	//// userDetail
-	//orm.DB.Create(&orm.UserDetail{UserRefer: user2.ID, IdCard: "12345678"})
-	//orm.DB.Create(&orm.UserDetail{UserRefer: user1.ID, IdCard: "32342342"})
-	////email
-	//orm.DB.Create(&orm.Email{UserTid: user1.ID, Email: "t1@email.com"})
-	//orm.DB.Create(&orm.Email{UserTid: user1.ID, Email: "t2@email.com"})
-	//orm.DB.Create(&orm.Email{UserTid: user2.ID, Email: "t3@email.com"})
-	//orm.DB.Create(&orm.Email{UserTid: user2.ID, Email: "t4@email.com"})
-	////language
-	//language1 := orm.Language{Language: "english", Level: 1}
-	//language2 := orm.Language{Language: "中文", Level: 1}
-	//orm.DB.Create(&language1)
-	//orm.DB.Create(&language2)
+	// class1 := orm.Class{Name: "t1 class", ClassId: 3}
+	// class2 := orm.Class{Name: "t2 class", ClassId: 4}
+	// orm.DB.Create(&class1)
+	// orm.DB.Create(&class2)
+	// // user
+	// user1 := orm.User{Name: "sum", ClassRefer: class2.ClassId}
+	// user2 := orm.User{Name: "bod", ClassRefer: class1.ClassId}
+	// orm.DB.Create(&user1)
+	// orm.DB.Create(&user2)
+	// // userDetail
+	// orm.DB.Create(&orm.UserDetail{UserRefer: user2.ID, IdCard: "12345678"})
+	// orm.DB.Create(&orm.UserDetail{UserRefer: user1.ID, IdCard: "32342342"})
+	// //email
+	// orm.DB.Create(&orm.Email{UserTid: user1.ID, Email: "t1@email.com"})
+	// orm.DB.Create(&orm.Email{UserTid: user1.ID, Email: "t2@email.com"})
+	// orm.DB.Create(&orm.Email{UserTid: user2.ID, Email: "t3@email.com"})
+	// orm.DB.Create(&orm.Email{UserTid: user2.ID, Email: "t4@email.com"})
+	// //language
+	// language1 := orm.Language{Language: "english", Level: 1}
+	// language2 := orm.Language{Language: "中文", Level: 1}
+	// orm.DB.Create(&language1)
+	// orm.DB.Create(&language2)
 
 	//属于
 	//user_1 := orm.User{}
@@ -75,14 +74,17 @@ func main() {
 	// preload
 	user_5 := orm.User{}
 	orm.DB.Preload("Languages").Preload("UserDetail").Where("userName = ?", "sum").Find(&user_5)
-	//orm.DB.Preload("Class").Preload("Email").Where("userName = ?", "sum").Find(&user_5) // Preload
+	// orm.DB.Preload("Class").Preload("Email").Where("userName = ?", "sum").Find(&user_5) // Preload
 	// DefaultTableNameHandler 与 model.TableName 同时使用导致class 不能使用
 	// User 包含多个 Email 的外键设置没有使用默认类名 + ID 导致email 不能使用
 	fmt.Printf("%+v", &user_5)
 
-	time.Sleep(5 * time.Second)
-	orm.DB.Model(&orm.User{}).Where("userName = ?", "sum").Update("age", 12)
+	// time.Sleep(5 * time.Second)
+	// orm.DB.Model(&orm.User{}).Where("userName = ?", "sum").Update("age", 12)
 
 
-	//manyToMany.ManyToManyDemo()
+	// hasMany.HasManyDemo()
+	// manyToMany.ManyToManyDemo()
+	// polymorphism.PolymorphismDemo()
+	// orm.FindDemo()
 }

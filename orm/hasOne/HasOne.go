@@ -39,7 +39,7 @@ func HasOneDemo() {
 	userInfo := User{}
 	orm.DB.Where("userName = ?", "bod").Find(&userInfo)
 	fmt.Printf("User is : %+v", userInfo)
-	//orm.DB.Model(&userInfo).Related(&userInfo.UserDetail, "UserRefer")
+	// orm.DB.Model(&userInfo).Related(&userInfo.UserDetail, "UserRefer")
 	orm.DB.Model(&userInfo).Association("UserDetail").Find(&userInfo.UserDetail)
 	fmt.Printf("%+v", userInfo.UserDetail)
 

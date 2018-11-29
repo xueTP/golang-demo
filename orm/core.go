@@ -13,7 +13,7 @@ var DB *gorm.DB
 
 func core() {
 	// root/12345678
-	db, err := gorm.Open("mysql", "root:12345678@/gormdemo?charset=utf8&parseTime=True&loc=Local")
+	db, err := gorm.Open("mysql", "root:root@/gormdemo?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		panic(err)
 	}
@@ -22,9 +22,9 @@ func core() {
 		return "gorm_" + defaultTableName
 	}
 	// 开启调试
-	//DB.LogMode(true)
+	DB.LogMode(true)
 	// 删除表
-	//DropTable()
+	// DropTable()
 	//创建及迁移表
-	//CreateTable()
+	// CreateTable()
 }

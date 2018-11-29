@@ -43,7 +43,7 @@ func BelongsToDemo() {
 	orm.DB.Model(&userInfo).Where(userInfo).Find(&userInfo)
 	fmt.Printf("User is : %+v", userInfo)
 	orm.DB.Model(&userInfo).Related(&userInfo.Class, "ClassRefer")
-	// orm.DB.Model(&userInfo).Association("Class").Find(&userInfo.Class)
 	fmt.Printf("Class is : %+v", userInfo.Class)
 
+	// orm.DB.Model(&userInfo).Association("Class").Find(&userInfo.Class)
 }

@@ -5,12 +5,14 @@ import (
 	"fmt"
 )
 
+// `gorm:"ForeignKey:UserID"`
+
 type User struct {
 	ID         int32  `gorm:"primary_key"`
 	Name       string `gorm:"column:userName;type: varchar(20);not null"`
 	Age        int8   `gorm:"default:0"`
 	Refer      int32
-	Email      []Email    `gorm:"ForeignKey:UserID"`       // 包含多个
+	Email      []Email  `gorm:"ForeignKey:UserID"` // 包含多个
 }
 
 type Email struct {
@@ -42,8 +44,8 @@ func HasManyDemo() {
 	orm.DB.Model(&User{}).Where("userName = ?", "bod").Find(&userInfo)
 	fmt.Printf("%+v", userInfo)
 	orm.DB.Model(&userInfo).Related(&userInfo.Email)
-	// orm.DB.Model(&user_3).Association("Emails").Find(&email_3s)
 	fmt.Printf("%+v", userInfo.Email)
 
+	// orm.DB.Model(&user_3).Association("Emails").Find(&email_3s)
 	//
 }
