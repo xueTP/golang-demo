@@ -56,11 +56,11 @@ func ManyToManyDemo() {
 	orm.DB.Create(&user2)
 
 	// 多对多
-	userInfo := User{}
-	orm.DB.Model(&User{}).Where("userName = ?", "sum").Find(&userInfo)
-	fmt.Printf("User is : %+v", userInfo)
-	orm.DB.Model(&userInfo).Related(&userInfo.Languages, "Languages")
-	fmt.Printf("Language is : %+v", userInfo.Languages)
+	// userInfo := User{}
+	// orm.DB.Model(&User{}).Where("userName = ?", "sum").Find(&userInfo)
+	// fmt.Printf("User is : %+v", userInfo)
+	// orm.DB.Model(&userInfo).Related(&userInfo.Languages, "Languages")
+	// fmt.Printf("Language is : %+v", userInfo.Languages)
 	// orm.DB.Model(&userInfo).Association("Languages").Append(&language3)
 	// orm.DB.Model(&userInfo).Association("Languages").Append(&language4)
 	// orm.DB.Model(&userInfo).Association("Languages").Find(&userInfo.Languages)

@@ -1,14 +1,13 @@
 package reptile
 
-import (
-	"fmt"
-	"regexp"
-)
+import "golang-demo/reptile/parser/zhenai"
 
 func regGetCity(buff []byte) {
-	reg := regexp.MustCompile(`<a href="(http://city.zhenai.com/[a-z0-9]+)"[^>]*>([^<]*)</a>`)
-	res := reg.FindAllSubmatch(buff, -1)
-	for _, v := range res {
-		fmt.Printf("ctiy: %s url: %s\n", v[2], v[1])
-	}
+	// reg := regexp.MustCompile(`<div class="m-btn purple" data-v-ff544c08>([^<]*)</div>`)
+	// res := reg.FindAllSubmatch(buff, -1)
+	// fmt.Printf("%+s", res)
+	// for _, v := range res {
+	// 	fmt.Printf("ctiy: %s url: %s\n", v[2], v[1])
+	// }
+	zhenai.PersonParser(buff)
 }

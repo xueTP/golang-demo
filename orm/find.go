@@ -6,10 +6,10 @@ func FindDemo() {
 	DB.DropTableIfExists(&Language{})
 	DB.AutoMigrate(&Language{})
 
-	language1 := Language{Language: "english", Level: 1,}
-	language2 := Language{Language: "中文", Level: 1,}
-	language3 := Language{Language: "lingua italiana", Level: 1,}
-	language4 := Language{Language: "Deutsch", Level: 1,}
+	language1 := Language{Language: "english", Level: 1}
+	language2 := Language{Language: "中文", Level: 1}
+	language3 := Language{Language: "lingua italiana", Level: 1}
+	language4 := Language{Language: "Deutsch", Level: 1}
 	DB.Create(&language1)
 	DB.Create(&language2)
 	DB.Create(&language3)

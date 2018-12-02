@@ -1,24 +1,24 @@
 package hasMany
 
 import (
-	"golang-demo/orm"
 	"fmt"
+	"golang-demo/orm"
 )
 
 // `gorm:"ForeignKey:UserID"`
 
 type User struct {
-	ID         int32  `gorm:"primary_key"`
-	Name       string `gorm:"column:userName;type: varchar(20);not null"`
-	Age        int8   `gorm:"default:0"`
-	Refer      int32
-	Email      []Email  `gorm:"ForeignKey:UserID"` // 包含多个
+	ID    int32  `gorm:"primary_key"`
+	Name  string `gorm:"column:userName;type: varchar(20);not null"`
+	Age   int8   `gorm:"default:0"`
+	Refer int32
+	Email []Email `gorm:"ForeignKey:UserID"` // 包含多个
 }
 
 type Email struct {
-	ID      int32 `gorm:"primary_key"`
-	UserID 	int32
-	Email   string `gorm:"type:varchar(20)"`
+	ID     int32 `gorm:"primary_key"`
+	UserID int32
+	Email  string `gorm:"type:varchar(20)"`
 }
 
 func HasManyDemo() {

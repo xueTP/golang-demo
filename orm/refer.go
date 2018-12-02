@@ -34,7 +34,7 @@ func CreateTable() {
 		DB.Set("gorm:table_options", "ENGINE=Innodb").AutoMigrate(&Language{})
 	}
 	// 设置相应外键
-	//DB.Model(&User{}).AddForeignKey("class_id", "class(`class_id`)", "RESTRICT", "RESTRICT")
+	DB.Model(&User{}).AddForeignKey("class_id", "class(`class_id`)", "RESTRICT", "RESTRICT")
 }
 
 func DropTable() {
@@ -52,8 +52,8 @@ type User struct {
 	Age        int8       `gorm:"default:0"`
 	Class      Class      `gorm:"ForeignKey:ClassRefer;AssociationForeignKey:ClassId"` // ClassRefer 为外键
 	ClassRefer int32      // user 属于 class classRefer 是外键
-	UserDetail UserDetail `gorm:"ForeignKey:UserRefer;"`   // 包含
-	Email      []Email    `gorm:"ForeignKey:UserID"`       // 包含多个
+	UserDetail UserDetail `gorm:"ForeignKey:UserRefer;"`    // 包含
+	Email      []Email    `gorm:"ForeignKey:UserID"`        // 包含多个
 	Languages  []Language `gorm:"many2many:user_languages"` // 多对多
 	CreateTime int64
 	UpdateTime int64
@@ -88,13 +88,12 @@ type Language struct {
 	Users    []User `gorm:"many2many:user_languages"`
 }
 
-
 func (u *User) BeforeCreate() (err error) {
 	u.CreateTime = time.Now().Unix()
 	return err
 }
 
-func (u *User) BeforeUpdate(scope *gorm.Scope) (error) {
+func (u *User) BeforeUpdate(scope *gorm.Scope) error {
 	scope.SetColumn("update_time", time.Now().Unix())
 	return nil
 }

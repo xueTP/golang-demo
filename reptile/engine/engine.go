@@ -22,6 +22,7 @@ func Run(seep ...Request) {
 	}
 
 	logrus.Infoln("start to parser this seep...")
+	// limit := 10
 	for len(aims) > 0 {
 		r := aims[0]
 		aims = aims[1:]
@@ -31,8 +32,16 @@ func Run(seep ...Request) {
 			continue
 		}
 		res := r.ParserFunc(body)
-		aims = append(aims, res.Requests...)
-		logrus.Infof("item Result is: %v", res.Item)
+		// fmt.Printf("%#v", aims)
+		if len(res.Requests) > 0 {
+			aims = append(aims, res.Requests...)
+		}
+		// logrus.Infof("item Result is: %v", res.Item)
+		// limit--
+		// if limit == 0 {
+		// 	break
+		// }
 	}
 	logrus.Infof("this request is ending...")
+	return
 }
