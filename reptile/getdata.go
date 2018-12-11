@@ -9,6 +9,8 @@ import (
 	"golang.org/x/text/transform"
 	"io/ioutil"
 	"net/http"
+	"golang-demo/reptile/engine"
+	"golang-demo/reptile/parser/zhenai"
 )
 
 func getHtml(url string) {
@@ -29,9 +31,9 @@ func getHtml(url string) {
 }
 
 func GetHtml() {
-	getHtml("http://album.zhenai.com/u/1571428123")
-	// m := engine.Request{Url: "http://city.zhenai.com/", ParserFunc: zhenai.CityListParser}
-	// engine.Run(m)
+	// getHtml("http://album.zhenai.com/u/1571428123")
+	m := engine.Request{Url: "http://city.zhenai.com/", ParserFunc: zhenai.CityListParser}
+	engine.ConcurrentEngine{WorkCount: 10}.Run(m)
 }
 
 func determineEncoding(reader *bufio.Reader) encoding.Encoding {
