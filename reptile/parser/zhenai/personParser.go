@@ -6,7 +6,7 @@ import (
 	"golang-demo/reptile/parser"
 	"golang-demo/reptile/model"
 	"strconv"
-	"fmt"
+	"github.com/Sirupsen/logrus"
 )
 
 const basePersonRule = `<div class="m-btn purple" data-v-ff544c08>([^<]*)</div>`
@@ -16,6 +16,7 @@ func PersonParser(body []byte) engine.ParseResult {
 	intReg := regexp.MustCompile(`([0-9]*)`)
 	baseReg := regexp.MustCompile(basePersonRule)
 	resBase := baseReg.FindAllSubmatch(body, -1)
+	logrus.Errorf("resbase : %v", resBase)
 	parson := model.Person{}
 	parserResult := engine.ParseResult{}
 	var baseString []byte
@@ -59,7 +60,7 @@ func PersonParser(body []byte) engine.ParseResult {
 	}
 	parson.Content = string(baseString)
 	parson.OtherDetail = string(baseOther)
-	fmt.Printf("%+v \n", parson)
+	logrus.Infof("parson: %+v \n", parson)
 	request := engine.Request{ParserFunc: parser.NilParserFunc}
 	parserResult.Requests = append(parserResult.Requests, request)
 	parserResult.Item = append(parserResult.Item, parson)

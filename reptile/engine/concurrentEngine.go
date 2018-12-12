@@ -18,9 +18,9 @@ func (this ConcurrentEngine) Run(seep ...Request) {
 	}
 
 	for _, v := range seep {
-		go func() {
-			in <- v
-		}()
+		go func(req Request) {
+			in <- req
+		}(v)
 	}
 
 	for  {
@@ -29,9 +29,10 @@ func (this ConcurrentEngine) Run(seep ...Request) {
 			logrus.Infof("Got item: %v", v)
 		}
 		for _, v := range res.Requests {
-			go func() {
-				in <- v
-			}()
+			//logrus.Errorf("this request is: %v", v.Url)
+			go func(req Request) {
+				in <- req
+			}(v)
 		}
 	}
 }
@@ -39,6 +40,7 @@ func (this ConcurrentEngine) Run(seep ...Request) {
 func Work(in chan Request, out chan ParseResult) {
 	for {
 		r := <- in
+		logrus.Warnf("url: %v", r.Url)
 		body, err := util.Fetch(r.Url)
 		if err != nil {
 			logrus.Errorf("this fetch err: %v, request: %v", err, r)

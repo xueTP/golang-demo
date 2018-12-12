@@ -34,6 +34,7 @@ func GetHtml() {
 	// getHtml("http://album.zhenai.com/u/1571428123")
 	m := engine.Request{Url: "http://city.zhenai.com/", ParserFunc: zhenai.CityListParser}
 	engine.ConcurrentEngine{WorkCount: 10}.Run(m)
+	//engine.Run(m)
 }
 
 func determineEncoding(reader *bufio.Reader) encoding.Encoding {
