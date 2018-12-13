@@ -9,14 +9,14 @@ import (
 	"github.com/Sirupsen/logrus"
 )
 
-const basePersonRule = `<div class="m-btn purple" data-v-ff544c08>([^<]*)</div>`
-const basePersonOtherRule = `<div class="m-btn pink" data-v-ff544c08>([^<]*)</div>`
+const basePersonRule = `<div class="m-btn purple" data-v-bff6f798>([^<]*)</div>`
+const basePersonOtherRule = `<div class="m-btn pink" data-v-bff6f798>([^<]*)</div>`
 
 func PersonParser(body []byte) engine.ParseResult {
 	intReg := regexp.MustCompile(`([0-9]*)`)
 	baseReg := regexp.MustCompile(basePersonRule)
 	resBase := baseReg.FindAllSubmatch(body, -1)
-	logrus.Errorf("resbase : %v", resBase)
+	// logrus.Errorf("resbase : %v", resBase)
 	parson := model.Person{}
 	parserResult := engine.ParseResult{}
 	var baseString []byte

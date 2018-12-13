@@ -47,7 +47,7 @@ func MockBrowser(url string) *http.Response {
 	req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36")
 	response, err := client.Do(req)
 	if err != nil {
-		panic(err)
+		logrus.Errorf("get html content err: %v", err)
 	}
 	return response
 }

@@ -3,6 +3,7 @@ package engine
 import (
 	"github.com/Sirupsen/logrus"
 	"golang-demo/reptile/util"
+	"time"
 )
 
 type ConcurrentEngine struct {
@@ -23,10 +24,12 @@ func (this ConcurrentEngine) Run(seep ...Request) {
 		}(v)
 	}
 
+	gotId := 0
 	for  {
 		res := <- out
 		for _, v := range res.Item {
-			logrus.Infof("Got item: %v", v)
+			logrus.Infof("Got #id: %d item: %v", gotId, v)
+			gotId ++
 		}
 		for _, v := range res.Requests {
 			//logrus.Errorf("this request is: %v", v.Url)
@@ -38,7 +41,9 @@ func (this ConcurrentEngine) Run(seep ...Request) {
 }
 
 func Work(in chan Request, out chan ParseResult) {
+	timeStemp := time.Tick(100 * time.Millisecond)
 	for {
+		<-timeStemp
 		r := <- in
 		logrus.Warnf("url: %v", r.Url)
 		body, err := util.Fetch(r.Url)
