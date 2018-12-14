@@ -3,14 +3,14 @@ package reptile
 import (
 	"bufio"
 	"github.com/Sirupsen/logrus"
+	"golang-demo/reptile/engine"
+	"golang-demo/reptile/parser/zhenai"
 	"golang-demo/reptile/util"
 	"golang.org/x/net/html/charset"
 	"golang.org/x/text/encoding"
 	"golang.org/x/text/transform"
 	"io/ioutil"
 	"net/http"
-	"golang-demo/reptile/engine"
-	"golang-demo/reptile/parser/zhenai"
 )
 
 func getHtml(url string) {

@@ -9,7 +9,7 @@ type Person struct {
 	Weight        int
 	WorkAddress   string
 	Income        string
-	Job string
+	Job           string
 	Education     string
 	Content       string
 	OtherDetail   string

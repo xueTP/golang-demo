@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"encoding/json"
+	"fmt"
 	"golang-demo/reptile"
 )
 
@@ -16,7 +16,7 @@ func main() {
 }
 
 func TestRange() {
-	a := []int8{1,2,3,4,5,6}
+	a := []int8{1, 2, 3, 4, 5, 6}
 	for i, v := range a {
 		if v == 4 || v == 5 {
 			a = append(a[:i], a[i+1:]...)

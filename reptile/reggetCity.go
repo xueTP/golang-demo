@@ -1,8 +1,8 @@
 package reptile
 
 import (
-	"regexp"
 	"fmt"
+	"regexp"
 )
 
 func regGetCity(buff []byte) {

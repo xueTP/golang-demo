@@ -25,11 +25,11 @@ func (this ConcurrentEngine) Run(seep ...Request) {
 	}
 
 	gotId := 0
-	for  {
-		res := <- out
+	for {
+		res := <-out
 		for _, v := range res.Item {
 			logrus.Infof("Got #id: %d item: %v", gotId, v)
-			gotId ++
+			gotId++
 		}
 		for _, v := range res.Requests {
 			//logrus.Errorf("this request is: %v", v.Url)
@@ -44,12 +44,12 @@ func Work(in chan Request, out chan ParseResult) {
 	timeStemp := time.Tick(100 * time.Millisecond)
 	for {
 		<-timeStemp
-		r := <- in
+		r := <-in
 		logrus.Warnf("url: %v", r.Url)
 		body, err := util.Fetch(r.Url)
 		if err != nil {
 			logrus.Errorf("this fetch err: %v, request: %v", err, r)
-		}else {
+		} else {
 			out <- r.ParserFunc(body)
 		}
 	}
