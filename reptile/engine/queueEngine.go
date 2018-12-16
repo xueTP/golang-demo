@@ -28,7 +28,7 @@ func (this ConcurrentQueueEngine) Run(seep ...Request) {
 	for  {
 		res := <- out
 		for _, v := range res.Item {
-			logrus.Infof("Got #id: %d item: %v", gotId, v)
+			logrus.Infof("Got #id: %d item: %+v", gotId, v)
 			gotId ++
 		}
 		for _, v := range res.Requests {
