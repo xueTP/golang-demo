@@ -13,7 +13,13 @@ func CityParser(body []byte) engine.ParseResult {
 	parserResult := engine.ParseResult{}
 	for _, v := range res {
 		// fmt.Printf("name: %s url: %s\n", v[2], v[1])
-		request := engine.Request{Url: string(v[1]), ParserFunc: PersonParser}
+		username := string(v[2])
+		request := engine.Request{
+			Url: string(v[1]),
+			ParserFunc: func(body []byte) engine.ParseResult {
+				return PersonParser(body, username)
+			},
+		}
 		parserResult.Requests = append(parserResult.Requests, request)
 		parserResult.Item = append(parserResult.Item, string(v[2]))
 	}

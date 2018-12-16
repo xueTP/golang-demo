@@ -2,17 +2,16 @@ package zhenai
 
 import (
 	"golang-demo/reptile/engine"
-	"regexp"
-	"golang-demo/reptile/parser"
 	"golang-demo/reptile/model"
+	"golang-demo/reptile/parser"
+	"regexp"
 	"strconv"
-	"github.com/Sirupsen/logrus"
 )
 
 const basePersonRule = `<div class="m-btn purple" data-v-bff6f798>([^<]*)</div>`
 const basePersonOtherRule = `<div class="m-btn pink" data-v-bff6f798>([^<]*)</div>`
 
-func PersonParser(body []byte) engine.ParseResult {
+func PersonParser(body []byte, username string) engine.ParseResult {
 	intReg := regexp.MustCompile(`([0-9]*)`)
 	baseReg := regexp.MustCompile(basePersonRule)
 	resBase := baseReg.FindAllSubmatch(body, -1)
@@ -60,7 +59,8 @@ func PersonParser(body []byte) engine.ParseResult {
 	}
 	parson.Content = string(baseString)
 	parson.OtherDetail = string(baseOther)
-	logrus.Infof("parson: %+v \n", parson)
+	parson.UserName = username
+	//logrus.Infof("parson: %+v \n", parson)
 	request := engine.Request{ParserFunc: parser.NilParserFunc}
 	parserResult.Requests = append(parserResult.Requests, request)
 	parserResult.Item = append(parserResult.Item, parson)
