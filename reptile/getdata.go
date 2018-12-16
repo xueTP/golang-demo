@@ -33,7 +33,7 @@ func getHtml(url string) {
 func GetHtml() {
 	// getHtml("http://album.zhenai.com/u/1571428123")
 	m := engine.Request{Url: "http://city.zhenai.com/", ParserFunc: zhenai.CityListParser}
-	engine.ConcurrentEngine{WorkCount: 10}.Run(m)
+	engine.ConcurrentQueueEngine{WorkCount: 10, Scheduling: engine.Scheduling{}}.Run(m)
 	//engine.Run(m)
 }
 
