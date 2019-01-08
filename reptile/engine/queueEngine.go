@@ -1,9 +1,13 @@
 package engine
 
 import (
+	"context"
+	"encoding/json"
 	"github.com/Sirupsen/logrus"
-	"time"
+	"golang-demo/reptile/Data"
+	"golang-demo/reptile/model"
 	"golang-demo/reptile/util"
+	"time"
 )
 
 type ConcurrentQueueEngine struct {
@@ -25,16 +29,33 @@ func (this ConcurrentQueueEngine) Run(seep ...Request) {
 	}
 
 	gotId := 0
-	for  {
-		res := <- out
+	for {
+		res := <-out
 		for _, v := range res.Item {
 			logrus.Infof("Got #id: %d item: %+v", gotId, v)
-			gotId ++
+			if v, ok := v.(model.Person); ok {
+				this.Save(v)
+			}
+			gotId++
 		}
 		for _, v := range res.Requests {
 			//logrus.Errorf("this request is: %v", v.Url)
 			this.SubmitRequest(v)
 		}
+	}
+}
+
+func (this ConcurrentQueueEngine) Save(item interface{}) {
+	client := Data.NewElasticClient()
+	jsonData, _ := json.Marshal(item)
+	_, err := client.Index().
+		Index("reptile").
+		Type("person").
+		BodyJson(string(jsonData)).
+		Do(context.Background())
+	if err != nil {
+		logrus.Errorf("elastic error: %v", err)
+		panic(err)
 	}
 }
 
@@ -44,12 +65,12 @@ func (this ConcurrentQueueEngine) Work(out chan ParseResult) {
 		<-timeStemp
 		inWork := make(chan Request)
 		this.Scheduling.WorkReady(inWork)
-		r := <- inWork
+		r := <-inWork
 		logrus.Warnf("url: %v", r.Url)
 		body, err := util.Fetch(r.Url)
 		if err != nil {
 			logrus.Errorf("this fetch err: %v, request: %v", err, r)
-		}else {
+		} else {
 			out <- r.ParserFunc(body)
 		}
 	}

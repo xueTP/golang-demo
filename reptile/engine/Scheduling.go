@@ -2,7 +2,7 @@ package engine
 
 type Scheduling struct {
 	RequestChan chan Request
-	WorkChan chan chan Request
+	WorkChan    chan chan Request
 }
 
 func (this *Scheduling) SubmitRequest(req Request) {
