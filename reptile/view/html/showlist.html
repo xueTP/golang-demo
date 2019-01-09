@@ -40,9 +40,9 @@
 <div class="container-fluid">
     <div class="col-md-9">
         <div class="list-group">
-            <?php for($i=0;$i<10;$i++):?>
+            {{range .list}}
             <div class="list-group-item" style="border: 0;">
-                <a href="#" style="color: #0F0F0F;"><h4>【神秘客315特别策划】哪家航空公司最让你泪流满面<?php echo $i;?></h4></a>
+                <a href="#" style="color: #0F0F0F;"><h4>【神秘客315特别策划】哪家航空公司最让你泪流满面</h4></a>
                 <p class="text-muted">
                     <small>发布时间:2015-2-11</small>
                     <small class="pull-right">
@@ -59,7 +59,7 @@
                 </p>
             </div>
             <div style="border: 1px dashed #ddd;"></div>
-            <?php endfor;?>
+            {{end}}
             <div class="text-center">
                 <ul class="pagination">
                     <li><a href="#">&laquo;</a></li>

@@ -1,6 +1,12 @@
 package model
 
+type BaseData struct {
+	Id string
+	Url string
+}
+
 type Person struct {
+	BaseData
 	UserName      string
 	IsMarred      bool
 	Age           int
