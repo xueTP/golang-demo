@@ -6,17 +6,21 @@ import (
 	"golang-demo/reptile/parser"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 const basePersonRule = `<div class="m-btn purple" data-v-bff6f798>([^<]*)</div>`
 const basePersonOtherRule = `<div class="m-btn pink" data-v-bff6f798>([^<]*)</div>`
 
-func PersonParser(body []byte, username string) engine.ParseResult {
+func PersonParser(body []byte, username string, url string) engine.ParseResult {
 	intReg := regexp.MustCompile(`([0-9]*)`)
 	baseReg := regexp.MustCompile(basePersonRule)
 	resBase := baseReg.FindAllSubmatch(body, -1)
 	// logrus.Errorf("resbase : %v", resBase)
 	parson := model.Person{}
+	urlSlice := strings.Split(url, "/")
+	parson.Url = url
+	parson.Id = urlSlice[len(urlSlice) - 1]
 	parserResult := engine.ParseResult{}
 	var baseString []byte
 	for i, v := range resBase {

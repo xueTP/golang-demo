@@ -34,7 +34,7 @@ func (this ConcurrentQueueEngine) Run(seep ...Request) {
 		for _, v := range res.Item {
 			logrus.Infof("Got #id: %d item: %+v", gotId, v)
 			if v, ok := v.(model.Person); ok {
-				this.Save(v)
+				this.Save(v, v.Id)
 			}
 			gotId++
 		}
@@ -45,12 +45,13 @@ func (this ConcurrentQueueEngine) Run(seep ...Request) {
 	}
 }
 
-func (this ConcurrentQueueEngine) Save(item interface{}) {
+func (this ConcurrentQueueEngine) Save(item interface{}, id string) {
 	client := Data.NewElasticClient()
 	jsonData, _ := json.Marshal(item)
 	_, err := client.Index().
 		Index("reptile").
-		Type("person").
+		Type("zhenaiPerson").
+		Id(id).
 		BodyJson(string(jsonData)).
 		Do(context.Background())
 	if err != nil {
