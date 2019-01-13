@@ -8,6 +8,8 @@ import (
 	"golang-demo/reptile/model"
 	"golang-demo/reptile/util"
 	"time"
+	"gopkg.in/olivere/elastic.v5"
+	"reflect"
 )
 
 type ConcurrentQueueEngine struct {
@@ -59,6 +61,19 @@ func (this ConcurrentQueueEngine) Save(item interface{}, id string) {
 		panic(err)
 	}
 }
+
+func getList(search string, from int) ([]interface{}, int64) {
+	client := Data.NewElasticClient()
+	list, err := client.Search("zhenaiPerson").
+		Query(elastic.NewQueryStringQuery(search)).
+		From(from).Do(context.Background())
+	if err != nil {
+		logrus.Errorf("elastic search is error : %v, search: %s, from: %d", err, search, from)
+		return []interface{}{}, 0
+	}
+	return list.Each(reflect.TypeOf(model.Person{})), list.TotalHits()
+}
+
 
 func (this ConcurrentQueueEngine) Work(out chan ParseResult) {
 	timeStemp := time.Tick(100 * time.Millisecond)

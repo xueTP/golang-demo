@@ -42,20 +42,20 @@
         <div class="list-group">
             {{range .list}}
             <div class="list-group-item" style="border: 0;">
-                <a href="#" style="color: #0F0F0F;"><h4>【神秘客315特别策划】哪家航空公司最让你泪流满面</h4></a>
+                <a href="{{.Url}}" target="_blank" style="color: #0F0F0F;"><h4>{{.UserName}}</h4></a>
                 <p class="text-muted">
-                    <small>发布时间:2015-2-11</small>
-                    <small class="pull-right">
-                        点击量:<span class="badge">20</span>
-                    </small>
-                </p>
-                <p class="text-muted">
-                    从2014年12个月投诉率平均值来看，从高到低依次是东方航空、中国国航、南方航空和海南航空。
-                    海航2月份投诉率创造了四大航最高点。2月恰似去年春节客运高峰期，海航抗压能力有点差哦。
-                    从投诉率波动来看，海南航空、南方航空投诉率波动较大；国际航空、东方航空投诉率波动较小
+                    {{/*<small>发布时间:2015-2-11</small>*/}}
+                    {{/*<small class="pull-right">*/}}
+                        {{/*点击量:<span class="badge">20</span>*/}}
+                    {{/*</small>*/}}
                 </p>
                 <p>
-                    <span class="badge">率波动</span>    <span class="badge">国际航空</span> <span class="badge">海南航空</span>
+                    <span class="badge">{{.IsMarred}}</span>    <span class="badge">{{.Age}}岁</span> <span class="badge">{{.Constellation}}</span>
+                    <span class="badge">{{.Height}}cm</span>    <span class="badge">{{.Weight}}kg</span> <span class="badge">{{.WorkAddress}}</span>
+                    <span class="badge">{{.Income}}</span>    <span class="badge">{{.Job}}</span> <span class="badge">{{.Education}}</span>
+                </p>
+                <p class="text-muted">
+                    {{.OtherDetail}}
                 </p>
             </div>
             <div style="border: 1px dashed #ddd;"></div>

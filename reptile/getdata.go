@@ -10,7 +10,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"html/template"
-	"golang-demo/reptile/engine"
 	"golang-demo/reptile/parser/zhenai"
 )
 
@@ -33,8 +32,8 @@ func getHtml(url string) {
 
 func GetHtml() {
 	// getHtml("http://album.zhenai.com/u/1571428123")
-	m := engine.Request{Url: "http://city.zhenai.com/", ParserFunc: zhenai.CityListParser}
-	engine.ConcurrentQueueEngine{WorkCount: 10, Scheduling: engine.Scheduling{}}.Run(m)
+	// m := engine.Request{Url: "http://city.zhenai.com/", ParserFunc: zhenai.CityListParser}
+	// engine.ConcurrentQueueEngine{WorkCount: 10, Scheduling: engine.Scheduling{}}.Run(m)
 	//engine.Run(m)
 	http.HandleFunc("/", rootFunc)
 	http.ListenAndServe(":8888", nil)
@@ -42,8 +41,10 @@ func GetHtml() {
 
 func rootFunc(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.ParseFiles("./reptile/view/html/showlist.html"))
+	body, _ := util.Fetch("http://album.zhenai.com/u/108757455")
+	res := zhenai.PersonParser(body, "Abigale", "http://album.zhenai.com/u/108757455")
 	data := map[string]interface{}{
-		"list": []int{1,2,3,4},
+		"list": []interface{}{res.Item[0]},
 	}
 	t.Execute(w, data)
 }
