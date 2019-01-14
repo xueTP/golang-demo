@@ -10,7 +10,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"html/template"
-	"golang-demo/reptile/parser/zhenai"
+	"golang-demo/reptile/engine"
+	"fmt"
 )
 
 func getHtml(url string) {
@@ -40,11 +41,15 @@ func GetHtml() {
 }
 
 func rootFunc(w http.ResponseWriter, r *http.Request) {
+    logrus.Info("tttt")
 	t := template.Must(template.ParseFiles("./reptile/view/html/showlist.html"))
-	body, _ := util.Fetch("http://album.zhenai.com/u/108757455")
-	res := zhenai.PersonParser(body, "Abigale", "http://album.zhenai.com/u/108757455")
+	//body, _ := util.Fetch("http://album.zhenai.com/u/108757455")
+	//res := zhenai.PersonParser(body, "Abigale", "http://album.zhenai.com/u/108757455")
+	res, totle := engine.GetList("", 0)
+	fmt.Printf("res: %v，\n totle: %d \n", res, totle)
 	data := map[string]interface{}{
-		"list": []interface{}{res.Item[0]},
+		"list": res,
+		"count": totle,
 	}
 	t.Execute(w, data)
 }

@@ -62,9 +62,13 @@ func (this ConcurrentQueueEngine) Save(item interface{}, id string) {
 	}
 }
 
-func getList(search string, from int) ([]interface{}, int64) {
+func GetList(search string, from int) ([]interface{}, int64) {
+	if len(search) == 0 {
+		search = "_search"
+	}
 	client := Data.NewElasticClient()
-	list, err := client.Search("zhenaiPerson").
+	list, err := client.Search().
+		Index("reptile").Type("zhenaiPerson").
 		Query(elastic.NewQueryStringQuery(search)).
 		From(from).Do(context.Background())
 	if err != nil {
