@@ -2,16 +2,17 @@ package reptile
 
 import (
 	"bufio"
+	"fmt"
 	"github.com/Sirupsen/logrus"
+	"golang-demo/reptile/engine"
 	"golang-demo/reptile/util"
 	"golang.org/x/net/html/charset"
 	"golang.org/x/text/encoding"
 	"golang.org/x/text/transform"
+	"html/template"
 	"io/ioutil"
 	"net/http"
-	"html/template"
-	"golang-demo/reptile/engine"
-	"fmt"
+	"strconv"
 )
 
 func getHtml(url string) {
@@ -41,15 +42,32 @@ func GetHtml() {
 }
 
 func rootFunc(w http.ResponseWriter, r *http.Request) {
-    logrus.Info("tttt")
 	t := template.Must(template.ParseFiles("./reptile/view/html/showlist.html"))
 	//body, _ := util.Fetch("http://album.zhenai.com/u/108757455")
 	//res := zhenai.PersonParser(body, "Abigale", "http://album.zhenai.com/u/108757455")
-	res, totle := engine.GetList("", 0)
-	fmt.Printf("res: %v，\n totle: %d \n", res, totle)
+	getQuery := r.URL.Query()
+	var search, from string
+	if v, ok := getQuery["search"]; ok {
+		search = v[0]
+	}
+	if v, ok := getQuery["from"]; ok {
+		from = v[0]
+	}
+	fmt.Println(search, from)
+	offset, _ := strconv.Atoi(from)
+	if offset < 0 {
+		offset = 0
+	}
+	res, total := engine.GetList(search, offset, 10)
+	fmt.Printf("res: %v，\n totle: %d \n, search: %v \n", res, total, search)
 	data := map[string]interface{}{
-		"list": res,
-		"count": totle,
+		"list":    res,
+		"count":   total,
+		"search":  search,
+		"from":    offset,
+		"pageUrl": "http://127.0.0.1:8888/?search=" + search + "&from=",
+		"prev":    offset - 10,
+		"curr":    offset + 10,
 	}
 	t.Execute(w, data)
 }

@@ -20,7 +20,7 @@ func PersonParser(body []byte, username string, url string) engine.ParseResult {
 	parson := model.Person{}
 	urlSlice := strings.Split(url, "/")
 	parson.Url = url
-	parson.Id = urlSlice[len(urlSlice) - 1]
+	parson.Id = urlSlice[len(urlSlice)-1]
 	parserResult := engine.ParseResult{}
 	var baseString []byte
 	for i, v := range resBase {

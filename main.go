@@ -3,17 +3,18 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"golang-demo/reptile"
+	"golang-demo/jsonRpc"
 )
 
 func main() {
 	// closeBag.FeibonaciNumsList()
 	// errorDefer.HttpErrDemo()
 	// maze.MazeBaseBreadthFirstDemo()
-	reptile.GetHtml()
+	//reptile.GetHtml()
 	//TestRange()
 	//jsonDecode()
 	//fmt.Printf("%v", uniquePathsWithObstacles([][]int{{0,0}, {1,0}}))
+	jsonRpc.JsonRpcMain()
 }
 
 func TestRange() {
@@ -111,3 +112,59 @@ func combineRecursive(seed, item []int, t int, res *[][]int) {
 		combineRecursive(newSeed, newItem, t-1, res)
 	}
 }
+
+// lc 87
+func merge(nums1 []int, m int, nums2 []int, n int) {
+	k, i, j := m+n-1, m-1, n-1
+	for i >= 0 && j >= 0 {
+		if nums1[i] > nums2[j] {
+			nums1[k] = nums1[i]
+			i--
+		} else {
+			nums1[k] = nums2[j]
+			j--
+		}
+		k--
+	}
+	if i < 0 && j >= 0 {
+		for j >= 0 {
+			nums1[k] = nums2[j]
+			k--
+			j--
+		}
+	}
+}
+
+// lc 200
+func numIslands(grid [][]byte) int {
+	if len(grid) == 0 {
+		return 0
+	}
+	num, il, jl := 0, len(grid), len(grid[0])
+	dire := [][]int{{0, -1}, {1,0}, {0, 1}, {-1, 0}}
+	for i, line := range grid {
+		for j, v := range line {
+			if v == '1' {
+				grid[i][j] = '0'
+				num ++
+				q := [][]int{{i, j}}
+				for len(q) > 0 {
+					now := q[0]
+					q = q[1:]
+					for _, val := range dire {
+						if now[0] + val[0] >= 0 && now[0] + val[0] < il && now[1] + val[1] >= 0 && now[1] + val[1] < jl && grid[now[0] + val[0]][now[1] + val[1]] == '1' {
+							grid[now[0] + val[0]][now[1] + val[1]] = '0'
+							q = append(q, []int{now[0] + val[0], now[1] + val[1]})
+						}
+					}
+				}
+			}
+		}
+	}
+	return num
+}
+
+// lc 752
+//func openLock(deadends []string, target string) int {
+//
+//}

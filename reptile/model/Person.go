@@ -1,7 +1,7 @@
 package model
 
 type BaseData struct {
-	Id string
+	Id  string
 	Url string
 }
 
