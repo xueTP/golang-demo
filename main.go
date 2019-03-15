@@ -1,9 +1,11 @@
 package main
 
 import (
+	"bou.ke/monkey"
+	"crypto/rand"
 	"encoding/json"
 	"fmt"
-	"golang-demo/jsonRpc"
+	"math/big"
 )
 
 func main() {
@@ -14,7 +16,10 @@ func main() {
 	//TestRange()
 	//jsonDecode()
 	//fmt.Printf("%v", uniquePathsWithObstacles([][]int{{0,0}, {1,0}}))
-	jsonRpc.JsonRpcMain()
+	//jsonRpc.JsonRpcMain()
+	//fmtScan()
+	//bitOperation()
+	monkey_test()
 }
 
 func TestRange() {
@@ -32,6 +37,25 @@ func jsonDecode() {
 	priceJson := make(map[string]float64)
 	json.Unmarshal([]byte(jsonString), &priceJson)
 	fmt.Println(priceJson)
+}
+
+func fmtScan() { // 类似c的cin <<
+	var name string
+	var age int
+	fmt.Println("请输入姓名：")
+	fmt.Scanln(&name)
+	fmt.Println("请输入年龄：")
+	fmt.Scan(&age)
+	fmt.Printf("%s的年龄是%d", name, age)
+}
+
+func bitOperation() {
+	var a = 1 >> 2
+	var b = -1 >> 2
+	var c = 1 << 2
+	var d = -1 << 2
+	fmt.Println(a, b, c, d)
+	fmt.Printf("%b, %b, %b, %b", a, b, c, d)
 }
 
 func uniquePaths(m int, n int) int {
@@ -164,7 +188,57 @@ func numIslands(grid [][]byte) int {
 	return num
 }
 
-// lc 752
-//func openLock(deadends []string, target string) int {
-//
-//}
+type TreeNode struct {
+	Val int
+	Left *TreeNode
+	Right *TreeNode
+}
+
+// lc 106
+func buildTree(inorder []int, postorder []int) *TreeNode {
+	return recursive106(inorder, postorder)
+}
+
+func recursive106(in, post []int) *TreeNode {
+	if len(in) == 0 {
+		return nil
+	}
+	//最后一个
+	l := len(post) - 1
+	t := post[l]
+	node := &TreeNode{Val: t}
+	//in 里获取
+	var n int
+	for i, v := range in {
+		if v == t {
+			n = i
+			break
+		}
+	}
+	c := l - 1 - (l - 1 - n)
+	node.Left = recursive106(in[:n], post[:c])
+	node.Right = recursive106(in[n+1:], post[c:l])
+	return node
+}
+
+type tt struct {
+	dn []string
+}
+
+func t1() {
+	tip := make(map[string]tt)
+	tip["a"] = tt{dn: []string{"a"}}
+	tip["b"] = tt{dn: []string{"b"}}
+	for k, _ := range tip {
+		node := tip[k]
+		node.dn = append(node.dn, "e")
+	}
+	fmt.Printf("%+v", tip)
+}
+
+func monkey_test() {
+	rnd, _ := rand.Int(rand.Reader, big.NewInt(100))
+	val := int8(rnd.Int64())
+	monkey.Patch(rnd.Int64, func() int64 {return int64(23232)})
+	fmt.Print(val)
+}

@@ -1,7 +1,7 @@
 package engine
 
 import (
-	"github.com/Sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 	"golang-demo/reptile/util"
 )
 

@@ -3,7 +3,7 @@ package reptile
 import (
 	"bufio"
 	"fmt"
-	"github.com/Sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 	"golang-demo/reptile/engine"
 	"golang-demo/reptile/util"
 	"golang.org/x/net/html/charset"

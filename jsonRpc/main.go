@@ -3,7 +3,7 @@ package jsonRpc
 import (
     "net/rpc"
     "net"
-    "github.com/Sirupsen/logrus"
+    "github.com/sirupsen/logrus"
     "golang-demo/jsonRpc/jsonService"
     "net/rpc/jsonrpc"
 )
