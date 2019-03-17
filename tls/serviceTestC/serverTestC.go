@@ -5,6 +5,9 @@ import (
     "crypto/x509"
     "io/ioutil"
     "log"
+    "net"
+    "bufio"
+    "fmt"
 )
 
 func main() {
@@ -35,5 +38,32 @@ func main() {
     if err != nil {
         log.Println(err)
         return
+    }
+
+    for {
+        conn, err := ln.Accept()
+        if err != nil {
+            log.Println(err)
+            continue
+        }
+        handleConn(conn)
+    }
+}
+
+func handleConn(conn net.Conn) {
+    defer conn.Close()
+    reader := bufio.NewReader(conn)
+    for  {
+        msg, err := reader.ReadString(byte('\n'))
+        if err != nil {
+            log.Println(err)
+            return
+        }
+        fmt.Println(msg)
+        n, err := conn.Write([]byte("世界\n"))
+        if err != nil {
+            log.Println(n, err)
+            return
+        }
     }
 }
