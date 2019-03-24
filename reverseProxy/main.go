@@ -49,11 +49,11 @@ func getRequestContent(r *http.Request) RequestContent {
 func getProxyUrl(url string) string {
     url = strings.ToLower(url)
     if url == "a" {
-        return getEnvConfig("B_REVERSE_URL", "")
+        return getEnvConfig("B_REVERSE_URL", "http://localhost:1331")
     }else if url == "b" {
-        return getEnvConfig("A_REVERSE_URL", "")
+        return getEnvConfig("A_REVERSE_URL", "http://localhost:1332")
     }
-    return getEnvConfig("OTHER_REVERSE_URL", "")
+    return getEnvConfig("OTHER_REVERSE_URL", "http://localhost:1333")
 }
 
 func reverseProxyParse(proxyUrl string, w http.ResponseWriter, r *http.Request) {
