@@ -9,6 +9,7 @@ import (
 	"golang-demo/reptile/util"
 	"gopkg.in/olivere/elastic.v5"
 	"reflect"
+	"strings"
 	"time"
 )
 
@@ -35,8 +36,8 @@ func (this ConcurrentQueueEngine) Run(seep ...Request) {
 		res := <-out
 		for _, v := range res.Item {
 			logrus.Infof("Got #id: %d item: %+v", gotId, v)
-			if v, ok := v.(model.Person); ok {
-				this.Save(v, v.Id)
+			if _, ok := v.(model.Person); ok {
+				//this.Save(v, v.Id)
 			}
 			gotId++
 		}
@@ -82,11 +83,13 @@ func (this ConcurrentQueueEngine) Work(out chan ParseResult) {
 		this.Scheduling.WorkReady(inWork)
 		r := <-inWork
 		logrus.Warnf("url: %v", r.Url)
-		body, err := util.Fetch(r.Url)
-		if err != nil {
-			logrus.Errorf("this fetch err: %v, request: %v", err, r)
-		} else {
-			out <- r.ParserFunc(body)
+		if strings.Trim(r.Url, " ") != "" {
+			body, err := util.Fetch(r.Url)
+			if err != nil {
+				logrus.Errorf("this fetch err: %v, request: %v", err, r)
+			} else {
+				out <- r.ParserFunc(body)
+			}
 		}
 	}
 }

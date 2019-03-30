@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/sirupsen/logrus"
 	"golang-demo/reptile/engine"
+	"golang-demo/reptile/parser/zhenai"
 	"golang-demo/reptile/util"
 	"golang.org/x/net/html/charset"
 	"golang.org/x/text/encoding"
@@ -34,11 +35,11 @@ func getHtml(url string) {
 
 func GetHtml() {
 	// getHtml("http://album.zhenai.com/u/1571428123")
-	// m := engine.Request{Url: "http://city.zhenai.com/", ParserFunc: zhenai.CityListParser}
-	// engine.ConcurrentQueueEngine{WorkCount: 10, Scheduling: engine.Scheduling{}}.Run(m)
-	//engine.Run(m)
-	http.HandleFunc("/", rootFunc)
-	http.ListenAndServe(":8888", nil)
+	m := engine.Request{Url: "http://city.zhenai.com/", ParserFunc: zhenai.CityListParser}
+	engine.ConcurrentQueueEngine{WorkCount: 100, Scheduling: engine.Scheduling{}}.Run(m)
+	// engine.Run(m)
+	// http.HandleFunc("/", rootFunc)
+	// http.ListenAndServe(":8888", nil)
 }
 
 func rootFunc(w http.ResponseWriter, r *http.Request) {
