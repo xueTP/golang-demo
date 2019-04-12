@@ -1,6 +1,7 @@
 package handle
 
 import (
+	videoGoConfig "config"
 	"encoding/json"
 	"github.com/Sirupsen/logrus"
 	"github.com/julienschmidt/httprouter"
@@ -42,14 +43,14 @@ func (this UserHandle) Login(w http.ResponseWriter, r *http.Request, p httproute
 		return
 	}
 	code, msg, sessionId := Logic.NewUserLogic().Login(user)
-	w.Header().Set(config.VideoConf.SessionIdHeadKey, sessionId)
+	w.Header().Set(videoGoConfig.VideoConf.SessionIdHeadKey, sessionId)
 	SendResponse(w, ResponseRes{ResponseCode: 200, Err: Err{ErrCode: code, ErrMsg: msg}})
 	return
 }
 
 // Logout 登出
 func (this UserHandle) Logout(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	sessionId := r.Header.Get(config.VideoConf.SessionIdHeadKey)
+	sessionId := r.Header.Get(videoGoConfig.VideoConf.SessionIdHeadKey)
 	Logic.NewSessionLogic().DelSession(sessionId)
 	SendResponse(w, ResponseRes{ResponseCode: 200, Err: Err{ErrCode: config.Success}})
 }

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"golang-demo/video-go/video-api/config"
+	"config"
 	"golang-demo/video-go/video-api/handle"
 	"log"
 	"net/http"
@@ -10,6 +10,6 @@ import (
 func main() {
 	// 注册 handle function
 	r := handle.RegisterRouter()
-	log.Printf("video-go api server is running in %s", config.VideoConf.ServerAddress)
-	http.ListenAndServe(config.VideoConf.ServerAddress, handle.NewMiddleHandle(r))
+	log.Printf("video-go api server is running in %s", config.VideoConf.ApiServerAddress)
+	http.ListenAndServe(config.VideoConf.ApiServerAddress, handle.NewMiddleHandle(r))
 }

@@ -4,8 +4,8 @@ import (
 	"github.com/Sirupsen/logrus"
 	"golang-demo/video-go/video-api/config"
 	"golang-demo/video-go/video-api/model"
-	"golang-demo/video-go/video-api/util"
 	"time"
+	"util"
 )
 
 type UserLogic struct {

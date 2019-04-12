@@ -1,16 +1,16 @@
 package model
 
 import (
+	videoGoConfig "config"
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
-	"golang-demo/video-go/video-api/config"
 	"log"
 )
 
 var DB *sql.DB
 
 func init() {
-	dbConf := config.VideoConf.DBConfig
+	dbConf := videoGoConfig.VideoConf.DBConfig
 	var err error
 	DB, err = sql.Open("mysql", dbConf.DbUser+":"+dbConf.DbPwd+"@("+dbConf.DbHost+")/"+dbConf.DataBaseName)
 	// DB, err = sql.Open("mysql", "root:root@(127.0.0.1:3306)" + dbConf.DataBaseName)

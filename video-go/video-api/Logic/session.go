@@ -1,16 +1,17 @@
 package Logic
 
 import (
+	videoGoConfig "config"
 	"encoding/json"
 	"github.com/Sirupsen/logrus"
 	"github.com/pkg/errors"
 	"golang-demo/video-go/video-api/config"
 	"golang-demo/video-go/video-api/model"
-	"golang-demo/video-go/video-api/util"
 	"net/http"
 	"strings"
 	"sync"
 	"time"
+	"util"
 )
 
 type SessionLogic struct {
@@ -19,7 +20,7 @@ type SessionLogic struct {
 
 func NewSessionLogic() SessionLogic {
 	return SessionLogic{
-		AliveTime: config.VideoConf.SessionLiveTime,
+		AliveTime: videoGoConfig.VideoConf.SessionLiveTime,
 	}
 }
 
@@ -75,8 +76,8 @@ func (this SessionLogic) isOutTimeSession(data sessionData, key string) bool {
 func (this SessionLogic) AuthCheckSession(r *http.Request) (int32, string) {
 	// 例外判断
 	path := strings.Split(r.RequestURI, "/")
-	sessionId := r.Header.Get(config.VideoConf.SessionIdHeadKey)
-	if len(path) <= 1 || util.InArrayString(path[1], config.VideoConf.NotAuthCheck) == -1 {
+	sessionId := r.Header.Get(videoGoConfig.VideoConf.SessionIdHeadKey)
+	if len(path) <= 1 || util.InArrayString(path[1], videoGoConfig.VideoConf.NotAuthCheck) == -1 {
 		// 是否有效判断
 		_, err := this.GetSession(sessionId)
 		if err != nil {
