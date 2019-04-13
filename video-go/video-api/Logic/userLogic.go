@@ -1,7 +1,7 @@
 package Logic
 
 import (
-	"github.com/Sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 	"golang-demo/video-go/video-api/config"
 	"golang-demo/video-go/video-api/model"
 	"time"

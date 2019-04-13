@@ -2,8 +2,8 @@ package handle
 
 import (
 	"config"
-	"github.com/Sirupsen/logrus"
 	"github.com/julienschmidt/httprouter"
+	"github.com/sirupsen/logrus"
 	"html/template"
 	"io/ioutil"
 	"net/http"
@@ -48,7 +48,7 @@ func (this VideoServer) Upload(w http.ResponseWriter, r *http.Request, p httprou
 		return
 	}
 
-	path := "./video-go/video/" + time.Now().Format("2006-01-02") + "/"
+	path := config.VideoConf.VideoTempDir + time.Now().Format("2006-01-02") + "/"
 	err = os.Mkdir(path, 0666)
 	if err != nil {
 		logrus.Errorf("video-go.Upload os.MakeDir error: %v, path: %v", err, path)
@@ -56,7 +56,7 @@ func (this VideoServer) Upload(w http.ResponseWriter, r *http.Request, p httprou
 		return
 	}
 
-	newFileName := util.GetMD5(fileHandle.Filename) + "." + tld[len(tld)-1]
+	newFileName := util.GetMD5(util.GetUUid(fileHandle.Filename)) + "." + tld[len(tld)-1]
 	err = ioutil.WriteFile(path+newFileName, data, 0666)
 	if err != nil {
 		logrus.Errorf("videoServer.Upload ioutil.WriteFile error: %v", err)
@@ -68,16 +68,25 @@ func (this VideoServer) Upload(w http.ResponseWriter, r *http.Request, p httprou
 }
 
 func (this VideoServer) DownLoad(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	path := "./video-go/video/" + p.ByName("path") + "/" + p.ByName("fileName")
+	path := config.VideoConf.VideoRealDir + p.ByName("path") + "/" + p.ByName("fileName")
 	logrus.Infof("return path :%v", path)
-	content, err := ioutil.ReadFile(path)
+	fileHand, err := os.Open(path)
 	if err != nil {
-		logrus.Errorf("ioutil.ReadFile error: %v, path: %v", content, path)
+		logrus.Errorf("os.Open error: %v, path: %s", err, path)
 		SendResponse(w, PARAM_ERR)
 		return
 	}
-
 	w.Header().Set("Content-Type", "video/mp4")
-	w.Write(content)
-	return
+	http.ServeContent(w, r, "", time.Now(), fileHand)
+	defer fileHand.Close()
+	//content, err := ioutil.ReadFile(path)
+	//if err != nil {
+	//	logrus.Errorf("ioutil.ReadFile error: %v, path: %v", content, path)
+	//	SendResponse(w, PARAM_ERR)
+	//	return
+	//}
+	//
+	//w.Header().Set("Content-Type", "video/mp4")
+	//w.Write(content)
+	//return
 }

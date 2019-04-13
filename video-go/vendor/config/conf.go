@@ -8,6 +8,8 @@ func init() {
 		ApiServerAddress:  ":9009",
 		SaveServerAddress: ":9010",
 		MaxUpLoadSize:     50 * 1024 * 1024, // 50M
+		VideoRealDir:      "./video-go/video/",
+		VideoTempDir:      "./video-go/video/temp/",
 		VideoSaveMaxConn:  2,
 		AllowUploatFuffix: []string{
 			"mp4", "avi",
@@ -33,6 +35,8 @@ type videoConf struct {
 	SaveServerAddress string
 	MaxUpLoadSize     int64
 	AllowUploatFuffix []string
+	VideoTempDir      string
+	VideoRealDir      string
 	VideoSaveMaxConn  int
 	SessionLiveTime   int64
 	SessionIdHeadKey  string

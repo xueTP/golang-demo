@@ -3,8 +3,8 @@ package handle
 import (
 	videoGoConfig "config"
 	"encoding/json"
-	"github.com/Sirupsen/logrus"
 	"github.com/julienschmidt/httprouter"
+	"github.com/sirupsen/logrus"
 	"golang-demo/video-go/video-api/Logic"
 	"golang-demo/video-go/video-api/config"
 	"golang-demo/video-go/video-api/model"

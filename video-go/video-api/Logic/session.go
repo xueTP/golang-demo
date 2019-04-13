@@ -3,8 +3,8 @@ package Logic
 import (
 	videoGoConfig "config"
 	"encoding/json"
-	"github.com/Sirupsen/logrus"
 	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
 	"golang-demo/video-go/video-api/config"
 	"golang-demo/video-go/video-api/model"
 	"net/http"
